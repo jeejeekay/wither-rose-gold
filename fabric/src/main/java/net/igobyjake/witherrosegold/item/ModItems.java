@@ -47,15 +47,24 @@ public class ModItems {
     public static final BlastToolItem.Hoe WITHER_ROSE_GOLDEN_HOE = registerItem("wither_rose_golden_hoe",
             properties -> new BlastToolItem.Hoe(ModToolTiers.WITHER_ROSE_GOLD, -4.0F, 0.0F, properties.fireResistant()));
 
+    // Armor tooltip explaining the full-set bonus.
+    private static final ItemLore SET_BONUS = new ItemLore(List.of(
+            Component.translatable("item.witherrosegold.armor.set_bonus").withStyle(style -> style.withColor(ChatFormatting.LIGHT_PURPLE).withItalic(false)),
+            Component.translatable("item.witherrosegold.armor.set_bonus.desc").withStyle(style -> style.withColor(ChatFormatting.GRAY).withItalic(false))));
+
     // ---- Armor ---- (netherite armor + toughness, no knockback resistance; full set = blast protection + zap)
     public static final Item WITHER_ROSE_GOLDEN_HELMET = registerItem("wither_rose_golden_helmet",
-            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.HELMET).fireResistant()));
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.HELMET).fireResistant()
+                    .component(DataComponents.LORE, SET_BONUS)));
     public static final Item WITHER_ROSE_GOLDEN_CHESTPLATE = registerItem("wither_rose_golden_chestplate",
-            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.CHESTPLATE).fireResistant()));
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.CHESTPLATE).fireResistant()
+                    .component(DataComponents.LORE, SET_BONUS)));
     public static final Item WITHER_ROSE_GOLDEN_LEGGINGS = registerItem("wither_rose_golden_leggings",
-            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.LEGGINGS).fireResistant()));
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.LEGGINGS).fireResistant()
+                    .component(DataComponents.LORE, SET_BONUS)));
     public static final Item WITHER_ROSE_GOLDEN_BOOTS = registerItem("wither_rose_golden_boots",
-            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.BOOTS).fireResistant()));
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.WITHER_ROSE_GOLD_ARMOR_MATERIAL, ArmorType.BOOTS).fireResistant()
+                    .component(DataComponents.LORE, SET_BONUS)));
 
     // A grey, non-italic tooltip line.
     private static ItemLore lore(String key) {

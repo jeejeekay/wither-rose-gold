@@ -2,8 +2,10 @@ package net.igobyjake.witherrosegold;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.igobyjake.witherrosegold.effect.FullSetEffects;
+import net.igobyjake.witherrosegold.effect.ModEffects;
 import net.igobyjake.witherrosegold.entity.ModEntities;
 import net.igobyjake.witherrosegold.item.ModItemGroups;
 import net.igobyjake.witherrosegold.item.ModItems;
@@ -27,12 +29,20 @@ public class witherrosegold implements ModInitializer {
     public void onInitialize() {
         ModItems.registerModItems();
         ModEntities.registerModEntities();
+        ModEffects.registerModEffects();
         ModItemGroups.registerItemGroups();
 
         // Zap thorns (shared code in effect/FullSetEffects). Blast protection is in mixin/LivingEntityMixin,
         // because Fabric API has no event that can change the amount of damage.
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
             if (!blocked) FullSetEffects.afterHurt(entity, source);
+        });
+
+        // "Wither Rosed" effect while the full set is worn (checked twice a second).
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            if (server.getTickCount() % FullSetEffects.SET_BONUS_CHECK_TICKS == 0) {
+                server.getPlayerList().getPlayers().forEach(FullSetEffects::updateSetBonus);
+            }
         });
 
         // The wither also drops a smithing template. Adds a pool to its loot table as it loads instead of

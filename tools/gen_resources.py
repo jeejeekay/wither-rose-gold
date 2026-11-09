@@ -32,6 +32,9 @@ for layer in layers:
 w(f"assets/{NS}/equipment/wither_rose_gold.json",
   {"layers": {layer: [{"texture": f"{NS}:wither_rose_gold"}] for layer in layers}})
 
+# set-bonus effect icon (18x18 placeholder made from the ingot)
+cp(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wither_rosed.png"), f"assets/{NS}/textures/mob_effect/wither_rosed.png")
+
 # ---------------------------------------------------------------- item models
 simple_item("wither_rose_gold_ingot", f"{NS}:item/wither_rose_gold_ingot")
 simple_item("wither_rose_smithing_template", "minecraft:item/netherite_upgrade_smithing_template")  # placeholder
@@ -67,6 +70,10 @@ lang = {
     "entity.witherrosegold.piezoshard": "Piezoshard",
     "death.attack.witherrosegold.zap": "%1$s was zapped while trying to hurt %2$s",
     "death.attack.witherrosegold.zap.item": "%1$s was zapped by %3$s while trying to hurt %2$s",
+    "effect.witherrosegold.wither_rosed": "Wither Rosed",
+    "effect.witherrosegold.wither_rosed.description": "Blast resistant and painful to touch",
+    "item.witherrosegold.armor.set_bonus": "Full set: Wither Rosed",
+    "item.witherrosegold.armor.set_bonus.desc": "Blast resistant and painful to touch",
 }
 for t in list(TOOLS) + list(ARMOR):
     lang[f"item.witherrosegold.wither_rose_golden_{t}"] = f"Wither Rose Golden {t.capitalize()}"
@@ -102,7 +109,8 @@ for t in list(TOOLS) + list(ARMOR):
 w(f"data/{NS}/damage_type/zap.json", {"exhaustion": 0.1, "message_id": f"{NS}.zap", "scaling": "when_caused_by_living_non_player"})
 w(f"data/{NS}/tags/damage_type/wither_rose_proof.json", {"values": ["#minecraft:is_fire", "#minecraft:is_explosion"]})
 w("data/minecraft/tags/damage_type/avoids_guardian_thorns.json", {"values": [I("zap")]})
-w(f"data/{NS}/tags/item/wither_rose_gold_repairable.json", {"values": [I("wither_rose_gold_ingot")]})
+w("data/minecraft/tags/damage_type/bypasses_armor.json", {"values": [I("zap")]})   # always exactly 3
+w(f"data/{NS}/tags/item/wither_rose_gold_repairable.json", {"values": [I("wither_rose_gold_ingot"), I("piezoshard")]})
 w(f"data/{NS}/tags/item/wither_rose_gold_armor.json", {"values": [I(f"wither_rose_golden_{a}") for a in ARMOR]})
 for t, tag in {**TOOLS, **ARMOR}.items():
     w(f"data/minecraft/tags/item/{tag}.json", {"values": [I(f"wither_rose_golden_{t}")]})
