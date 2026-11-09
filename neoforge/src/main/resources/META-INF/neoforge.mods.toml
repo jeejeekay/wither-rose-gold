@@ -1,4 +1,4 @@
-# Mod metadata for NeoForge. ${...} values are filled in from gradle.properties when the jar is built.
+# Mod metadata for NeoForge. The dollar-brace values are filled in from gradle.properties when the jar is built.
 modLoader="javafml"
 loaderVersion="${loader_version_range}"
 license="${mod_license}"
