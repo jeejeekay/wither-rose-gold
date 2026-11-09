@@ -1,0 +1,73 @@
+# Builds both loaders on every push. Results: GitHub repo -> "Actions" tab.
+# Wither Rose Gold needs Rose Gold Equipment to run, so each job first builds RGE from the
+# same-named branch of jeejeekay/rose-gold-equipment and drops its jar into <loader>/libs/.
+# Each Minecraft branch has its own copy of this file; only the Java versions differ.
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:   # adds a "Run workflow" button in the Actions tab
+
+jobs:
+  build:
+    name: ${{ matrix.loader }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false          # one loader failing doesn't cancel the other
+      matrix:
+        include:
+          - loader: neoforge
+            java: "21"
+          - loader: fabric
+            java: "25"
+    defaults:
+      run:
+        working-directory: ${{ matrix.loader }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Get Rose Gold Equipment (same branch)
+        uses: actions/checkout@v5
+        with:
+          repository: jeejeekay/rose-gold-equipment
+          ref: ${{ github.head_ref || github.ref_name }}
+          path: rge
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - uses: gradle/actions/setup-gradle@v4   # caches Minecraft + dependencies between runs
+
+      - name: Build Rose Gold Equipment jar
+        working-directory: rge/${{ matrix.loader }}
+        run: |
+          chmod +x gradlew
+          bash ../../.github/scripts/gradle-run.sh "RGE ${{ matrix.loader }} jar" assemble
+          mkdir -p ../../${{ matrix.loader }}/libs
+          for j in build/libs/rosegoldequipment-*.jar; do
+            case "$j" in *-sources.jar|*-javadoc.jar) ;; *) cp "$j" ../../${{ matrix.loader }}/libs/ ;; esac
+          done
+          ls -l ../../${{ matrix.loader }}/libs
+
+      - name: Build (compile + jar)
+        run: |
+          chmod +x gradlew
+          bash ../.github/scripts/gradle-run.sh "${{ matrix.loader }} build" build
+
+      - name: GameTests
+        # Automated in-game checks (src/gametest), run headless with RGE loaded.
+        run: |
+          if [ "${{ matrix.loader }}" = "neoforge" ]; then t=runGameTestServer; else t=runGameTest; fi
+          bash ../.github/scripts/gradle-run.sh "${{ matrix.loader }} gametests" $t
+          echo "::notice title=${{ matrix.loader }} gametests::$(grep -hoE '[0-9]+ (required )?tests? (passed|failed)[^"]*|All [0-9]+ required tests passed[^"]*' $(find . -name latest.log -not -path './build/tmp/*' 2>/dev/null) 2>/dev/null | head -3 | tr '\n' ' ')"
+
+      - name: Upload jars
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: witherrosegold-${{ matrix.loader }}
+          path: ${{ matrix.loader }}/build/libs/*.jar
+          if-no-files-found: ignore

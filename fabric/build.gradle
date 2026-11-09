@@ -1,0 +1,76 @@
+plugins {
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+}
+
+fabricApi {
+	// Automated tests: src/gametest (a separate test-only mod, never in the release jar).
+	// They run as part of ./gradlew build, or on their own with ./gradlew runGameTest.
+	configureTests {
+		createSourceSet = true
+		modId = "witherrosegold-test"
+		enableClientGameTests = false
+	}
+}
+
+// Rose Gold Equipment, from a jar in libs/ (see rge_dir in gradle.properties).
+// WRG's code doesn't use RGE's classes - only its item names in recipes - so it's only needed
+// when the game actually runs (runClient, runServer, GameTests), not to compile.
+def rgeJars = fileTree(dir: file(project.rge_dir), include: 'rosegoldequipment-*.jar', exclude: ['*-sources.jar', '*-javadoc.jar'])
+
+dependencies {
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// "mod" = Loom remaps the release jar to the names used in this workspace.
+	modLocalRuntime rgeJars
+}
+
+// Say so clearly instead of failing later with "requires mod rosegoldequipment".
+def rgeMissing = "Rose Gold Equipment jar not found in '${project.rge_dir}'. Copy rosegoldequipment-<version>.jar (Fabric, ${project.minecraft_version}) there first.".toString()
+tasks.matching { it.name.startsWith('run') }.configureEach {
+	doFirst {
+		if (rgeJars.isEmpty()) throw new GradleException(rgeMissing)
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
+	}
+}

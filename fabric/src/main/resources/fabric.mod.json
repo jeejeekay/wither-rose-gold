@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "witherrosegold",
+  "version": "${version}",
+  "name": "Wither Rose Gold",
+  "description": "Upgrades Rose Gold Equipment's tools and armor to wither rose gold. Requires Rose Gold Equipment.",
+  "authors": ["igobyjake"],
+  "contact": {
+    "sources": "https://github.com/jeejeekay/wither-rose-gold"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["net.igobyjake.witherrosegold.witherrosegold"],
+    "client": ["net.igobyjake.witherrosegold.witherrosegoldclient"]
+  },
+  "mixins": ["witherrosegold.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*",
+    "rosegoldequipment": ">=1.10.0"
+  }
+}

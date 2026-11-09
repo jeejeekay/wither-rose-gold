@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "witherrosegold:item/wither_rose_golden_hoe"
+  }
+}

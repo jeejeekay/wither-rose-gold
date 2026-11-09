@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "witherrosegold:wither_rose_gold_ingot",
+  "base": "rosegoldequipment:rose_golden_sword",
+  "result": {
+    "id": "witherrosegold:wither_rose_golden_sword"
+  },
+  "template": "witherrosegold:wither_rose_smithing_template"
+}

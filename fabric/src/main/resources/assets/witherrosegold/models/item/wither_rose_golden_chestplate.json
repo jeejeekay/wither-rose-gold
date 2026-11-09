@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "witherrosegold:item/wither_rose_golden_chestplate"
+  }
+}

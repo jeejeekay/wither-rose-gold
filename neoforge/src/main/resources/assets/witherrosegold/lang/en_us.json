@@ -1,0 +1,20 @@
+{
+  "itemgroup.witherrosegold.wither_rose_gold_group": "Wither Rose Gold",
+  "item.witherrosegold.wither_rose_gold_ingot": "Wither Rose Gold Ingot",
+  "item.witherrosegold.wither_rose_smithing_template": "Wither Rose Smithing Template",
+  "item.witherrosegold.wither_rose_smithing_template.desc": "Upgrades rose gold equipment to wither rose gold",
+  "item.witherrosegold.piezoshard": "Piezoshard",
+  "item.witherrosegold.piezoshard.desc": "Unstable crystals that create energy from impact",
+  "entity.witherrosegold.piezoshard": "Piezoshard",
+  "death.attack.witherrosegold.zap": "%1$s was zapped while trying to hurt %2$s",
+  "death.attack.witherrosegold.zap.item": "%1$s was zapped by %3$s while trying to hurt %2$s",
+  "item.witherrosegold.wither_rose_golden_sword": "Wither Rose Golden Sword",
+  "item.witherrosegold.wither_rose_golden_pickaxe": "Wither Rose Golden Pickaxe",
+  "item.witherrosegold.wither_rose_golden_axe": "Wither Rose Golden Axe",
+  "item.witherrosegold.wither_rose_golden_shovel": "Wither Rose Golden Shovel",
+  "item.witherrosegold.wither_rose_golden_hoe": "Wither Rose Golden Hoe",
+  "item.witherrosegold.wither_rose_golden_helmet": "Wither Rose Golden Helmet",
+  "item.witherrosegold.wither_rose_golden_chestplate": "Wither Rose Golden Chestplate",
+  "item.witherrosegold.wither_rose_golden_leggings": "Wither Rose Golden Leggings",
+  "item.witherrosegold.wither_rose_golden_boots": "Wither Rose Golden Boots"
+}

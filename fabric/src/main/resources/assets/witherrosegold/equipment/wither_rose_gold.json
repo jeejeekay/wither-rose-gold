@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "witherrosegold:wither_rose_gold"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "witherrosegold:wither_rose_gold"
+      }
+    ]
+  }
+}

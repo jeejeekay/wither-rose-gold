@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:nether_star",
+    "witherrosegold:piezoshard",
+    "witherrosegold:piezoshard",
+    "witherrosegold:piezoshard",
+    "witherrosegold:piezoshard",
+    "rosegoldequipment:rose_gold_ingot",
+    "rosegoldequipment:rose_gold_ingot",
+    "rosegoldequipment:rose_gold_ingot",
+    "rosegoldequipment:rose_gold_ingot"
+  ],
+  "result": {
+    "count": 4,
+    "id": "witherrosegold:wither_rose_gold_ingot"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "witherrosegold-test",
+  "version": "1.0.0",
+  "name": "Wither Rose Gold GameTests",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-gametest": ["net.igobyjake.witherrosegold.gametest.WitherRoseGoldGameTests"]
+  },
+  "depends": {
+    "witherrosegold": "*"
+  }
+}
