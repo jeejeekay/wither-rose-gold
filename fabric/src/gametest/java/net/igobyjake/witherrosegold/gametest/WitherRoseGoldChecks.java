@@ -18,6 +18,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.core.Holder;
+import net.igobyjake.witherrosegold.effect.FullSetEffects;
+import net.igobyjake.witherrosegold.entity.PiezoshardExplosionDamage;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -153,6 +157,8 @@ public final class WitherRoseGoldChecks {
             ItemStack stack = new ItemStack(item("wither_rose_golden_" + piece));
             h.assertTrue(stack.is(ItemTags.TRIMMABLE_ARMOR), "wither_rose_golden_" + piece + " is not trimmable");
             h.assertTrue(stack.isValidRepairItem(ingot), "wither_rose_golden_" + piece + " can't be repaired with the ingot");
+            h.assertTrue(stack.isValidRepairItem(new ItemStack(item("piezoshard"))), "wither_rose_golden_" + piece + " can't be repaired with piezoshards");
+            h.assertTrue(stack.has(DataComponents.LORE), "wither_rose_golden_" + piece + " doesn't describe the set bonus");
             for (ItemAttributeModifiers.Entry e : stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).modifiers()) {
                 if (e.attribute().is(Attributes.ARMOR)) armor += e.modifier().amount();
                 if (e.attribute().is(Attributes.ARMOR_TOUGHNESS)) toughness += e.modifier().amount();
@@ -165,7 +171,7 @@ public final class WitherRoseGoldChecks {
         h.succeed();
     }
 
-    /** Netherite durability/mining level; repairs with the ingot. */
+    /** Netherite mining level, 2520 durability, mining speed 11; repairs with the ingot and piezoshards. */
     public static void tools(GameTestHelper h) {
         ItemStack ingot = new ItemStack(item("wither_rose_gold_ingot"));
         h.assertTrue(new ItemStack(item("wither_rose_golden_pickaxe")).isCorrectToolForDrops(Blocks.ANCIENT_DEBRIS.defaultBlockState()),
@@ -173,8 +179,11 @@ public final class WitherRoseGoldChecks {
         for (String tool : TOOLS) {
             ItemStack stack = new ItemStack(item("wither_rose_golden_" + tool));
             h.assertTrue(stack.isValidRepairItem(ingot), "wither_rose_golden_" + tool + " can't be repaired with the ingot");
-            h.assertTrue(stack.getMaxDamage() == 2031, "wither_rose_golden_" + tool + " durability should be 2031, is " + stack.getMaxDamage());
+            h.assertTrue(stack.isValidRepairItem(new ItemStack(item("piezoshard"))), "wither_rose_golden_" + tool + " can't be repaired with piezoshards");
+            h.assertTrue(stack.getMaxDamage() == 2520, "wither_rose_golden_" + tool + " durability should be 2520, is " + stack.getMaxDamage());
         }
+        float speed = new ItemStack(item("wither_rose_golden_pickaxe")).getDestroySpeed(Blocks.STONE.defaultBlockState());
+        h.assertTrue(speed == 11.0F, "pickaxe mining speed on stone should be 11, is " + speed);
         h.succeed();
     }
 
@@ -249,7 +258,7 @@ public final class WitherRoseGoldChecks {
         h.succeed();
     }
 
-    /** Hitting a zombie in the full set over and over zaps the attacker at least once. */
+    /** Hitting a zombie in the full set zaps the attacker: exactly 3 damage, and no hit immunity afterwards. */
     public static void zap(GameTestHelper h) {
         LivingEntity victim = armoredZombie(h, new BlockPos(3, 1, 3), "witherrosegold", "wither_rose_golden_");
         LivingEntity attacker = (LivingEntity) h.spawn(entity("minecraft", "zombie"), new BlockPos(9, 1, 9));
@@ -261,11 +270,27 @@ public final class WitherRoseGoldChecks {
             victim.hurtServer(level, level.damageSources().mobAttack(attacker), 1.0F + i);
         }
         h.assertTrue(attacker.getHealth() < attacker.getMaxHealth(), "attacker was never zapped in 40 hits");
+        h.assertTrue(attacker.getMaxHealth() - attacker.getHealth() == FullSetEffects.ZAP_DAMAGE,
+                "a zap should do exactly 3 damage, did " + (attacker.getMaxHealth() - attacker.getHealth()));
+        h.assertTrue(attacker.hurtServer(level, level.damageSources().generic(), 1.0F), "the zap left the attacker immune to the next hit");
         victim.discard();
         attacker.discard();
         h.succeed();
     }
 
+
+    /** The full set gives the "Wither Rosed" effect (shown in the inventory); taking a piece off removes it. */
+    public static void setBonus(GameTestHelper h) {
+        LivingEntity zombie = armoredZombie(h, new BlockPos(6, 1, 6), "witherrosegold", "wither_rose_golden_");
+        Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.get(FullSetEffects.WITHER_ROSED).orElseThrow();
+        FullSetEffects.updateSetBonus(zombie);
+        h.assertTrue(zombie.hasEffect(effect), "full set should give Wither Rosed");
+        zombie.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+        FullSetEffects.updateSetBonus(zombie);
+        h.assertFalse(zombie.hasEffect(effect), "Wither Rosed should go away without the full set");
+        zombie.discard();
+        h.succeed();
+    }
 
     private static LivingEntity armoredZombie(GameTestHelper h, BlockPos pos, String namespace, String prefix) {
         LivingEntity zombie = (LivingEntity) h.spawn(entity("minecraft", "zombie"), pos);
@@ -277,8 +302,9 @@ public final class WitherRoseGoldChecks {
 
     // ---------------------------------------------------------------- piezoshard (arena)
 
-    /** Throwing uses one shard and spawns the grenade; a grenade that lands blows up the block it hits. */
+    /** Throwing uses one shard and spawns the grenade; a grenade that lands blows up the block it hits; max 20 damage. */
     public static void piezoshard(GameTestHelper h) {
+        h.assertTrue(PiezoshardExplosionDamage.damageAt(0, 1) == 20.0F, "piezoshard centre damage should be 20, is " + PiezoshardExplosionDamage.damageAt(0, 1));
         Player player = h.makeMockPlayer(GameType.SURVIVAL);
         player.setPos(h.absoluteVec(new Vec3(6.5, 2, 6.5)));
         ItemStack shards = new ItemStack(item("piezoshard"), 4);

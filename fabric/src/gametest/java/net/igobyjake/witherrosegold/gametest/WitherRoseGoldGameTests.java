@@ -32,6 +32,9 @@ public class WitherRoseGoldGameTests {
     public void zap(GameTestHelper helper) { WitherRoseGoldChecks.zap(helper); }
 
     @GameTest(structure = ARENA, maxTicks = 100)
+    public void setBonus(GameTestHelper helper) { WitherRoseGoldChecks.setBonus(helper); }
+
+    @GameTest(structure = ARENA, maxTicks = 100)
     public void piezoshard(GameTestHelper helper) { WitherRoseGoldChecks.piezoshard(helper); }
 
     @GameTest(structure = ARENA, maxTicks = 100)
