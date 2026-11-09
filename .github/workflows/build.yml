@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - loader: neoforge
-            java: "21"
+            java: "25"
           - loader: fabric
             java: "25"
     defaults:

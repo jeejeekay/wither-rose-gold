@@ -1,6 +1,6 @@
 package net.igobyjake.witherrosegold.item;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.igobyjake.witherrosegold.witherrosegold;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 public class ModItemGroups {
     public static final CreativeModeTab WITHER_ROSE_GOLD_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(witherrosegold.MOD_ID, "wither_rose_gold_group"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.WITHER_ROSE_GOLD_INGOT))
+            FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.WITHER_ROSE_GOLD_INGOT))
                     .title(Component.translatable("itemgroup.witherrosegold.wither_rose_gold_group"))
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.WITHER_ROSE_GOLD_INGOT);

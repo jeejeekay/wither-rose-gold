@@ -27,7 +27,7 @@ public class ModItems {
     // own blasts can't destroy it.
     public static final DeferredItem<Item> WITHER_ROSE_SMITHING_TEMPLATE = ITEMS.registerItem("wither_rose_smithing_template",
             properties -> new Item(properties.rarity(Rarity.RARE)
-                    .component(DataComponents.DAMAGE_RESISTANT, new DamageResistant(ModTags.DamageTypes.WITHER_ROSE_PROOF))
+                    .delayedComponent(DataComponents.DAMAGE_RESISTANT, context -> new DamageResistant(context.getOrThrow(ModTags.DamageTypes.WITHER_ROSE_PROOF)))
                     .component(DataComponents.LORE, lore("item.witherrosegold.wither_rose_smithing_template.desc"))));
     // A throwable grenade (see PiezoshardItem / PiezoshardEntity).
     public static final DeferredItem<PiezoshardItem> PIEZOSHARD = ITEMS.registerItem("piezoshard",
