@@ -256,8 +256,9 @@ public final class WitherRoseGoldChecks {
         attacker.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.LEATHER_HELMET));   // so daylight can't hurt it
         ServerLevel level = h.getLevel();
         for (int i = 0; i < 40 && attacker.getHealth() >= attacker.getMaxHealth(); i++) {
-            resetInvulnerability(victim);
-            victim.hurtServer(level, level.damageSources().mobAttack(attacker), 1.0F);
+            // Each hit 1 more than the last: during the hurt cooldown only the extra 1 is applied, but it still
+            // counts as a hit (no need to reset the cooldown, whose field differs between versions).
+            victim.hurtServer(level, level.damageSources().mobAttack(attacker), 1.0F + i);
         }
         h.assertTrue(attacker.getHealth() < attacker.getMaxHealth(), "attacker was never zapped in 40 hits");
         victim.discard();
@@ -265,10 +266,6 @@ public final class WitherRoseGoldChecks {
         h.succeed();
     }
 
-    // Lets the same entity be hurt again in the same tick.
-    private static void resetInvulnerability(Entity entity) {
-        entity.invulnerableTime = 0;
-    }
 
     private static LivingEntity armoredZombie(GameTestHelper h, BlockPos pos, String namespace, String prefix) {
         LivingEntity zombie = (LivingEntity) h.spawn(entity("minecraft", "zombie"), pos);
