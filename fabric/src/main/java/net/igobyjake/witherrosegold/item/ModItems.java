@@ -40,12 +40,12 @@ public class ModItems {
             properties -> new BlastToolItem(properties.sword(ModToolTiers.WITHER_ROSE_GOLD, 3.0F, -2.4F).fireResistant()));
     public static final BlastToolItem WITHER_ROSE_GOLDEN_PICKAXE = registerItem("wither_rose_golden_pickaxe",
             properties -> new BlastToolItem(properties.pickaxe(ModToolTiers.WITHER_ROSE_GOLD, 1.0F, -2.8F).fireResistant()));
-    public static final BlastToolItem.Shovel WITHER_ROSE_GOLDEN_SHOVEL = registerItem("wither_rose_golden_shovel",
-            properties -> new BlastToolItem.Shovel(ModToolTiers.WITHER_ROSE_GOLD, 1.5F, -3.0F, properties.fireResistant()));
-    public static final BlastToolItem.Axe WITHER_ROSE_GOLDEN_AXE = registerItem("wither_rose_golden_axe",
-            properties -> new BlastToolItem.Axe(ModToolTiers.WITHER_ROSE_GOLD, 5.0F, -3.0F, properties.fireResistant()));
-    public static final BlastToolItem.Hoe WITHER_ROSE_GOLDEN_HOE = registerItem("wither_rose_golden_hoe",
-            properties -> new BlastToolItem.Hoe(ModToolTiers.WITHER_ROSE_GOLD, -4.0F, 0.0F, properties.fireResistant()));
+    public static final BlastToolItem WITHER_ROSE_GOLDEN_SHOVEL = registerItem("wither_rose_golden_shovel",
+            properties -> new BlastToolItem(properties.shovel(ModToolTiers.WITHER_ROSE_GOLD, 1.5F, -3.0F).fireResistant()));
+    public static final BlastToolItem WITHER_ROSE_GOLDEN_AXE = registerItem("wither_rose_golden_axe",
+            properties -> new BlastToolItem(properties.axe(ModToolTiers.WITHER_ROSE_GOLD, 5.0F, -3.0F).fireResistant()));
+    public static final BlastToolItem WITHER_ROSE_GOLDEN_HOE = registerItem("wither_rose_golden_hoe",
+            properties -> new BlastToolItem(properties.hoe(ModToolTiers.WITHER_ROSE_GOLD, -4.0F, 0.0F).fireResistant()));
 
     // ---- Armor ---- (netherite armor + toughness, no knockback resistance; full set = blast protection + zap)
     public static final Item WITHER_ROSE_GOLDEN_HELMET = registerItem("wither_rose_golden_helmet",

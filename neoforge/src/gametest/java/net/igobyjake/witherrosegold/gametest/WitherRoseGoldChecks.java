@@ -267,7 +267,7 @@ public final class WitherRoseGoldChecks {
 
     // Lets the same entity be hurt again in the same tick.
     private static void resetInvulnerability(Entity entity) {
-        entity.invulnerableTime = 0;
+        entity.setInvulnerableTime(0);
     }
 
     private static LivingEntity armoredZombie(GameTestHelper h, BlockPos pos, String namespace, String prefix) {
