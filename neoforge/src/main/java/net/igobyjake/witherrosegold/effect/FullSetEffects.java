@@ -1,13 +1,18 @@
 package net.igobyjake.witherrosegold.effect;
 
 import net.igobyjake.witherrosegold.util.ModTags;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,16 +21,20 @@ import net.minecraft.world.entity.LivingEntity;
  * What a full set of wither rose gold armor does. Built in, so it works on top of (and
  * independently from) any enchantments:
  *  - Blast protection: explosions do half damage.
- *  - Zap: whoever hits you in melee has a chance to get shocked (like Thorns, but electric).
+ *  - Zap: whoever hits you in melee has a 50% chance to take 3 damage (ignores armor, and doesn't
+ *    give them the usual half-second of hit immunity, so your own attacks still land).
+ *  - While a player wears it, they have the "Wither Rosed" effect so the bonus shows in the inventory.
  *
- * Vanilla-only (same file on Fabric and NeoForge); the loaders just call these two methods.
+ * Vanilla-only (same file on Fabric and NeoForge); the loaders just call these methods.
  */
 public final class FullSetEffects {
     /** Fraction of explosion damage removed (vanilla Blast Protection IV on every piece caps at 80%). */
     public static final float BLAST_REDUCTION = 0.5F;
-    public static final float ZAP_CHANCE = 0.3F;
-    public static final int ZAP_MIN_DAMAGE = 2;
-    public static final int ZAP_MAX_DAMAGE = 4;
+    public static final float ZAP_CHANCE = 0.5F;
+    public static final float ZAP_DAMAGE = 3.0F;
+    /** How often (in ticks) players are checked for the set-bonus effect. */
+    public static final int SET_BONUS_CHECK_TICKS = 10;
+    public static final Identifier WITHER_ROSED = Identifier.fromNamespaceAndPath("witherrosegold", "wither_rosed");
 
     private static final EquipmentSlot[] SLOTS = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
@@ -55,14 +64,33 @@ public final class FullSetEffects {
         if (source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)) return;
         if (!hasFullSet(victim) || victim.getRandom().nextFloat() >= ZAP_CHANCE) return;
 
-        float damage = ZAP_MIN_DAMAGE + victim.getRandom().nextInt(ZAP_MAX_DAMAGE - ZAP_MIN_DAMAGE + 1);
         DamageSource zap = new DamageSource(
                 level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(ModTags.DamageTypes.ZAP), victim);
-        target.hurtServer(level, zap, damage);
+        target.hurtServer(level, zap, ZAP_DAMAGE);
+        clearHitCooldown(target);   // the zap doesn't make the attacker immune to the next real hit
 
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, target.getX(), target.getY(0.5), target.getZ(),
                 14, target.getBbWidth() * 0.4, target.getBbHeight() * 0.3, target.getBbWidth() * 0.4, 0.15);
         level.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.LIGHTNING_BOLT_IMPACT,
                 SoundSource.PLAYERS, 0.3F, 1.9F);
+    }
+
+    // The field holding the "recently hurt" cooldown was renamed in 26.3.
+    private static void clearHitCooldown(LivingEntity entity) {
+        entity.invulnerableTime = 0;
+    }
+
+    /** Gives the "Wither Rosed" effect while the full set is worn, and takes it away when it isn't. */
+    public static void updateSetBonus(LivingEntity entity) {
+        Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.get(WITHER_ROSED).orElse(null);
+        if (effect == null) return;
+        boolean wearing = hasFullSet(entity);
+        MobEffectInstance current = entity.getEffect(effect);
+        if (wearing && current == null) {
+            // Infinite, no particles, icon shown in the inventory and HUD.
+            entity.addEffect(new MobEffectInstance(effect, MobEffectInstance.INFINITE_DURATION, 0, true, false, true));
+        } else if (!wearing && current != null) {
+            entity.removeEffect(effect);
+        }
     }
 }

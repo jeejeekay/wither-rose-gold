@@ -23,6 +23,7 @@ public final class WitherRoseGoldGameTests {
             helper.register(id("blast_mining"), WitherRoseGoldChecks::blastMining);
             helper.register(id("blast_protection"), WitherRoseGoldChecks::blastProtection);
             helper.register(id("zap"), WitherRoseGoldChecks::zap);
+            helper.register(id("set_bonus"), WitherRoseGoldChecks::setBonus);
             helper.register(id("piezoshard"), WitherRoseGoldChecks::piezoshard);
             helper.register(id("wither_drop"), WitherRoseGoldChecks::witherDrop);
             helper.register(id("showcase_loads"), WitherRoseGoldChecks::showcaseLoads);
