@@ -12,9 +12,9 @@ RGE for now (the template uses vanilla's netherite upgrade template picture, the
 | Item | How you get it | What it does |
 |---|---|---|
 | Wither Rose Smithing Template | Every wither drops one (on top of its nether star; added to the drops, vanilla's loot table isn't replaced). Copy it: template top-middle, crying obsidian below it, 7 amethyst shards around (makes 2) | Can't burn or be blown up, like a nether star |
-| Piezoshard | 4 amethyst shards + 4 quartz, any shape | Right-click to throw; explodes on impact (power 3, TNT is 4). Stacks to 16, 1 s cooldown |
+| Piezoshard | 4 amethyst shards + 4 quartz, any shape | Right-click to throw; explodes on impact (blast size 3, TNT is 4; at most 20 damage at the centre). Stacks to 16, 1 s cooldown. Also repairs wither rose gold gear |
 | Wither Rose Gold Ingot | Nether star + 4 piezoshards + 4 rose gold ingots, any shape (makes 4) | Fireproof, like netherite |
-| Wither rose gold sword / pickaxe / shovel / axe / hoe | Smithing table: template + rose gold tool + ingot | Netherite stats, fireproof. **Right-click a block = 3x3 blast** |
+| Wither rose gold sword / pickaxe / shovel / axe / hoe | Smithing table: template + rose gold tool + ingot | Netherite mining level and damage, but mining speed 11 and 2520 durability; fireproof. **Right-click a block = 3x3 blast** |
 | Wither rose gold helmet / chestplate / leggings / boots | Smithing table: template + rose gold armor + ingot | Netherite armor and toughness, fireproof, **no** knockback resistance. **Full set = blast protection + zap** |
 
 **3x3 blast** (right-click a block with any wither rose gold tool): breaks the 3x3 square flat against the
@@ -25,7 +25,8 @@ blocks, chests/furnaces/other block entities, liquids or bedrock, or blocks the 
 
 **Full set** (built in, works alongside enchantments):
 - Blast protection: explosions do half damage.
-- Zap: when something hits you in melee, 30% chance it gets shocked for 2-4 damage (electric sparks, quiet zap).
+- Zap: when something hits you in melee, 50% chance it gets shocked for exactly 3 damage (ignores armor, and doesn't give the attacker hit immunity, so your own hits still land).
+- Players wearing the full set get the **Wither Rosed** effect (shown in the inventory, no particles) as a reminder; the armor tooltip explains the bonus.
 
 ## Layout
 
