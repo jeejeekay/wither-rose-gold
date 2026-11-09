@@ -17,7 +17,7 @@
   "mixins": ["witherrosegold.mixins.json"],
   "depends": {
     "fabricloader": ">=0.19.2",
-    "minecraft": "~26.1.2",
+    "minecraft": "~26.2",
     "java": ">=25",
     "fabric-api": "*",
     "rosegoldequipment": ">=1.10.0"
