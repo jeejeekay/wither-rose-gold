@@ -11,7 +11,7 @@ RGE for now (the template uses vanilla's netherite upgrade template picture, the
 
 | Item | How you get it | What it does |
 |---|---|---|
-| Wither Rose Smithing Template | Every wither drops one (on top of its nether star). Copy it: template top-middle, crying obsidian below it, 7 amethyst shards around (makes 2) | Can't burn or be blown up, like a nether star |
+| Wither Rose Smithing Template | Every wither drops one (on top of its nether star; added to the drops, vanilla's loot table isn't replaced). Copy it: template top-middle, crying obsidian below it, 7 amethyst shards around (makes 2) | Can't burn or be blown up, like a nether star |
 | Piezoshard | 4 amethyst shards + 4 quartz, any shape | Right-click to throw; explodes on impact (power 3, TNT is 4). Stacks to 16, 1 s cooldown |
 | Wither Rose Gold Ingot | Nether star + 4 piezoshards + 4 rose gold ingots, any shape (makes 4) | Fireproof, like netherite |
 | Wither rose gold sword / pickaxe / shovel / axe / hoe | Smithing table: template + rose gold tool + ingot | Netherite stats, fireproof. **Right-click a block = 3x3 blast** |
@@ -48,8 +48,11 @@ neoforge/ or fabric/
     effect/      FullSetEffects   - blast protection + zap      (same file on both loaders)
     util/        BlastMining      - the 3x3 blast                (same file on both loaders)
                  ModTags
+    (Fabric) witherrosegold.java also adds the template to the wither's drops with LootTableEvents.MODIFY
     mixin/       (Fabric only) LivingEntityMixin - hooks blast protection; Fabric API has no "change damage" event
   src/main/resources/            recipes, tags, models, lang... plain JSON, same on both loaders
+                                 (NeoForge also has data/witherrosegold/loot_modifiers/wither_template.json:
+                                 "when the wither's loot is rolled, also roll entities/wither_bonus")
   src/gametest/                  automated in-game tests (docs/TESTING.md)
   libs/                          put the RGE jar here to run the game (not committed)
 ```

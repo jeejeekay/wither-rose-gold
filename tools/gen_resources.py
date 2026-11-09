@@ -95,11 +95,8 @@ for t in list(TOOLS) + list(ARMOR):
         "result": {"id": I(f"wither_rose_golden_{t}")},
         "template": I("wither_rose_smithing_template")})
 
-# ---------------------------------------------------------------- wither drop (vanilla's table is empty; the nether star is dropped by code)
-w("data/minecraft/loot_table/entities/wither.json", {
-    "type": "minecraft:entity",
-    "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": I("wither_rose_smithing_template")}]}],
-    "random_sequence": "minecraft:entities/wither"})
+# The wither's template drop is added by each loader (NeoForge: loot modifier, Fabric: LootTableEvents),
+# not here, so vanilla's wither loot table is never replaced.
 
 # ---------------------------------------------------------------- damage type + tags
 w(f"data/{NS}/damage_type/zap.json", {"exhaustion": 0.1, "message_id": f"{NS}.zap", "scaling": "when_caused_by_living_non_player"})
