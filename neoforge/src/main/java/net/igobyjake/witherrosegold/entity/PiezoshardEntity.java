@@ -12,8 +12,10 @@ import net.minecraft.world.phys.HitResult;
 
 /** A thrown piezoshard: flies like a snowball and explodes on impact, a bit weaker than TNT. */
 public class PiezoshardEntity extends ThrowableItemProjectile {
-    /** TNT is 4. */
+    /** Size of the blast (which blocks break). TNT is 4. */
     public static final float EXPLOSION_POWER = 3.0F;
+    /** Damage to mobs/players: at most 20 at the centre, regardless of the size above. */
+    private static final PiezoshardExplosionDamage DAMAGE = new PiezoshardExplosionDamage();
 
     public PiezoshardEntity(EntityType<? extends PiezoshardEntity> type, Level level) {
         super(type, level);
@@ -32,7 +34,7 @@ public class PiezoshardEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
         if (this.level() instanceof ServerLevel level) {
-            level.explode(this, this.getX(), this.getY(), this.getZ(), EXPLOSION_POWER, Level.ExplosionInteraction.TNT);
+            level.explode(this, null, DAMAGE, this.getX(), this.getY(), this.getZ(), EXPLOSION_POWER, false, Level.ExplosionInteraction.TNT);
             this.discard();
         }
     }
