@@ -69,12 +69,12 @@ public final class ModConfigs {
 
     public static void register(IEventBus modEventBus, ModContainer container) {
         container.registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
-        modEventBus.addListener(ModConfigEvent.Loading.class, event -> apply(event.getConfig()));
-        modEventBus.addListener(ModConfigEvent.Reloading.class, event -> apply(event.getConfig()));
+        // These only fire for this mod's own config files (WRG has just this one).
+        modEventBus.addListener(ModConfigEvent.Loading.class, event -> apply());
+        modEventBus.addListener(ModConfigEvent.Reloading.class, event -> apply());
     }
 
-    private static void apply(ModConfig config) {
-        if (config.getSpec() != COMMON_SPEC) return;
+    private static void apply() {
         WrgConfig.zapChance = ZAP_CHANCE.get();
         WrgConfig.zapDamage = ZAP_DAMAGE.get();
         WrgConfig.blastProtection = BLAST_PROTECTION.get();
