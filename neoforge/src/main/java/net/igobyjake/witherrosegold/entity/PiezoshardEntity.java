@@ -1,5 +1,6 @@
 package net.igobyjake.witherrosegold.entity;
 
+import net.igobyjake.witherrosegold.config.WrgConfig;
 import net.igobyjake.witherrosegold.item.ModItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
@@ -14,7 +15,7 @@ import net.minecraft.world.phys.HitResult;
 public class PiezoshardEntity extends ThrowableItemProjectile {
     /** Size of the blast (which blocks break). TNT is 4. */
     public static final float EXPLOSION_POWER = 3.0F;
-    /** Damage to mobs/players: at most 20 at the centre, regardless of the size above. */
+    /** Damage to mobs/players: at most piezoshard_max_damage (default 20) at the centre, regardless of the size above. */
     private static final PiezoshardExplosionDamage DAMAGE = new PiezoshardExplosionDamage();
 
     public PiezoshardEntity(EntityType<? extends PiezoshardEntity> type, Level level) {
@@ -34,7 +35,8 @@ public class PiezoshardEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
         if (this.level() instanceof ServerLevel level) {
-            level.explode(this, null, DAMAGE, this.getX(), this.getY(), this.getZ(), EXPLOSION_POWER, false, Level.ExplosionInteraction.TNT);
+            level.explode(this, null, DAMAGE, this.getX(), this.getY(), this.getZ(), EXPLOSION_POWER, false,
+                    WrgConfig.piezoshardBreaksBlocks ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE);
             this.discard();
         }
     }

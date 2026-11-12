@@ -1,5 +1,6 @@
 package net.igobyjake.witherrosegold;
 
+import net.igobyjake.witherrosegold.config.ModConfigs;
 import com.mojang.logging.LogUtils;
 import net.igobyjake.witherrosegold.effect.FullSetEffects;
 import net.igobyjake.witherrosegold.effect.ModEffects;
@@ -23,6 +24,7 @@ public class witherrosegold {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public witherrosegold(IEventBus modEventBus, ModContainer modContainer) {
+        ModConfigs.register(modEventBus, modContainer);   // settings (config/witherrosegold-common.toml)
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModEffects.register(modEventBus);

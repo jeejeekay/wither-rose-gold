@@ -1,5 +1,6 @@
 package net.igobyjake.witherrosegold.item;
 
+import net.igobyjake.witherrosegold.config.WrgConfig;
 import net.igobyjake.witherrosegold.entity.PiezoshardEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 /** Right-click to throw (works like a snowball), with a short cooldown so it can't be spammed. */
 public class PiezoshardItem extends Item {
-    public static final int COOLDOWN_TICKS = 20;
+    // The cooldown is a setting: see config/WrgConfig.
 
     public PiezoshardItem(Properties properties) {
         super(properties);
@@ -30,7 +31,7 @@ public class PiezoshardItem extends Item {
             Projectile.spawnProjectileFromRotation(PiezoshardEntity::new, serverLevel, stack, player, 0.0F, 1.5F, 1.0F);
         }
         player.awardStat(Stats.ITEM_USED.get(this));
-        player.getCooldowns().addCooldown(stack, COOLDOWN_TICKS);
+        if (WrgConfig.piezoshardCooldown > 0) player.getCooldowns().addCooldown(stack, WrgConfig.piezoshardCooldown);
         stack.consume(1, player);
         return InteractionResult.SUCCESS;
     }
