@@ -47,5 +47,7 @@
   "witherrosegold.configuration.piezoshard_breaks_blocks": "Breaks Blocks",
   "witherrosegold.configuration.piezoshard_breaks_blocks.tooltip": "Piezoshard explosions break blocks.",
   "witherrosegold.configuration.piezoshard_cooldown": "Throw Cooldown",
-  "witherrosegold.configuration.piezoshard_cooldown.tooltip": "Ticks between throws (20 = 1 second)."
+  "witherrosegold.configuration.piezoshard_cooldown.tooltip": "Ticks between throws (20 = 1 second).",
+  "witherrosegold.configuration.section.witherrosegold.local.toml": "Wither Rose Gold Settings",
+  "witherrosegold.configuration.section.witherrosegold.local.toml.title": "Wither Rose Gold Settings"
 }

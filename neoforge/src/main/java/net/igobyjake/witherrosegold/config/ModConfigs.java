@@ -7,7 +7,7 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 /**
- * NeoForge side of the settings: config/witherrosegold-common.toml, also editable in game from
+ * NeoForge side of the settings: config/witherrosegold-local.toml (26.3 calls this type "local"; it was "common"), also editable in game from
  * Mods -> Wither Rose Gold -> Config (NeoForge draws that screen for us). Whenever the file is
  * loaded or changed, the values are copied into WrgConfig.
  */
@@ -68,7 +68,7 @@ public final class ModConfigs {
     private ModConfigs() {}
 
     public static void register(IEventBus modEventBus, ModContainer container) {
-        container.registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
+        container.registerConfig(ModConfig.Type.LOCAL, COMMON_SPEC);   // 26.3 renamed COMMON to LOCAL
         // These only fire for this mod's own config files (WRG has just this one).
         modEventBus.addListener(ModConfigEvent.Loading.class, event -> apply());
         modEventBus.addListener(ModConfigEvent.Reloading.class, event -> apply());

@@ -24,7 +24,7 @@ public class witherrosegold {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public witherrosegold(IEventBus modEventBus, ModContainer modContainer) {
-        ModConfigs.register(modEventBus, modContainer);   // settings (config/witherrosegold-common.toml)
+        ModConfigs.register(modEventBus, modContainer);   // settings (config/witherrosegold-local.toml)
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
         ModEffects.register(modEventBus);
