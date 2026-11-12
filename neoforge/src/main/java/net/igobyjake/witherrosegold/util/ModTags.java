@@ -12,7 +12,7 @@ public class ModTags {
     private static final String MOD_ID = "witherrosegold";
 
     public static class Items {
-        /** What repairs wither rose gold gear in an anvil (the ingot). */
+        /** What repairs wither rose gold gear in an anvil (piezoshards). */
         public static final TagKey<Item> WITHER_ROSE_GOLD_REPAIRABLE = TagKey.create(Registries.ITEM, id("wither_rose_gold_repairable"));
         /** The four armor pieces; wearing all of them turns on the full-set effects. */
         public static final TagKey<Item> WITHER_ROSE_GOLD_ARMOR = TagKey.create(Registries.ITEM, id("wither_rose_gold_armor"));

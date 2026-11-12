@@ -20,6 +20,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.core.Holder;
+import net.igobyjake.witherrosegold.config.WrgConfig;
 import net.igobyjake.witherrosegold.effect.FullSetEffects;
 import net.igobyjake.witherrosegold.entity.PiezoshardExplosionDamage;
 import net.minecraft.world.item.Item;
@@ -149,14 +150,14 @@ public final class WitherRoseGoldChecks {
 
     // ---------------------------------------------------------------- armor and tools
 
-    /** Netherite armor (20) + toughness (12) and no knockback resistance; trimmable; repairable. */
+    /** Netherite armor (20) + toughness (12) and no knockback resistance; trimmable; repairs with piezoshards (not the ingot). */
     public static void armor(GameTestHelper h) {
         double armor = 0, toughness = 0, knockback = 0;
         ItemStack ingot = new ItemStack(item("wither_rose_gold_ingot"));
         for (String piece : ARMOR) {
             ItemStack stack = new ItemStack(item("wither_rose_golden_" + piece));
             h.assertTrue(stack.is(ItemTags.TRIMMABLE_ARMOR), "wither_rose_golden_" + piece + " is not trimmable");
-            h.assertTrue(stack.isValidRepairItem(ingot), "wither_rose_golden_" + piece + " can't be repaired with the ingot");
+            h.assertFalse(stack.isValidRepairItem(ingot), "wither_rose_golden_" + piece + " shouldn't be repairable with the ingot");
             h.assertTrue(stack.isValidRepairItem(new ItemStack(item("piezoshard"))), "wither_rose_golden_" + piece + " can't be repaired with piezoshards");
             h.assertTrue(stack.has(DataComponents.LORE), "wither_rose_golden_" + piece + " doesn't describe the set bonus");
             for (ItemAttributeModifiers.Entry e : stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).modifiers()) {
@@ -171,14 +172,14 @@ public final class WitherRoseGoldChecks {
         h.succeed();
     }
 
-    /** Netherite mining level, 2520 durability, mining speed 11; repairs with the ingot and piezoshards. */
+    /** Netherite mining level, 2520 durability, mining speed 11; repairs with piezoshards (not the ingot). */
     public static void tools(GameTestHelper h) {
         ItemStack ingot = new ItemStack(item("wither_rose_gold_ingot"));
         h.assertTrue(new ItemStack(item("wither_rose_golden_pickaxe")).isCorrectToolForDrops(Blocks.ANCIENT_DEBRIS.defaultBlockState()),
                 "pickaxe can't harvest ancient debris");
         for (String tool : TOOLS) {
             ItemStack stack = new ItemStack(item("wither_rose_golden_" + tool));
-            h.assertTrue(stack.isValidRepairItem(ingot), "wither_rose_golden_" + tool + " can't be repaired with the ingot");
+            h.assertFalse(stack.isValidRepairItem(ingot), "wither_rose_golden_" + tool + " shouldn't be repairable with the ingot");
             h.assertTrue(stack.isValidRepairItem(new ItemStack(item("piezoshard"))), "wither_rose_golden_" + tool + " can't be repaired with piezoshards");
             h.assertTrue(stack.getMaxDamage() == 2520, "wither_rose_golden_" + tool + " durability should be 2520, is " + stack.getMaxDamage());
         }
@@ -270,7 +271,7 @@ public final class WitherRoseGoldChecks {
             victim.hurtServer(level, level.damageSources().mobAttack(attacker), 1.0F + i);
         }
         h.assertTrue(attacker.getHealth() < attacker.getMaxHealth(), "attacker was never zapped in 40 hits");
-        h.assertTrue(attacker.getMaxHealth() - attacker.getHealth() == FullSetEffects.ZAP_DAMAGE,
+        h.assertTrue(attacker.getMaxHealth() - attacker.getHealth() == (float) WrgConfig.zapDamage,
                 "a zap should do exactly 3 damage, did " + (attacker.getMaxHealth() - attacker.getHealth()));
         h.assertTrue(attacker.hurtServer(level, level.damageSources().generic(), 1.0F), "the zap left the attacker immune to the next hit");
         victim.discard();

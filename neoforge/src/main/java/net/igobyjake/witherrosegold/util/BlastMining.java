@@ -1,5 +1,6 @@
 package net.igobyjake.witherrosegold.util;
 
+import net.igobyjake.witherrosegold.config.WrgConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -29,7 +30,7 @@ import java.util.List;
  * Vanilla-only (same file on Fabric and NeoForge).
  */
 public final class BlastMining {
-    public static final int COOLDOWN_TICKS = 10;
+    // On/off and the cooldown are settings: see config/WrgConfig.
     /** Blocks at least this blast-resistant are never broken (obsidian, crying obsidian, netherite...). */
     public static final float MAX_BLAST_RESISTANCE = 1200.0F;
 
@@ -42,7 +43,7 @@ public final class BlastMining {
 
     public static InteractionResult tryBlast(UseOnContext context) {
         Player player = context.getPlayer();
-        if (player == null || player.isSecondaryUseActive()) return null;
+        if (!WrgConfig.blastMining || player == null || player.isSecondaryUseActive()) return null;
         Level level = context.getLevel();
         ItemStack tool = context.getItemInHand();
         BlockPos center = context.getClickedPos();
@@ -66,7 +67,7 @@ public final class BlastMining {
         serverLevel.sendParticles(ParticleTypes.POOF, c.x, c.y, c.z, 10, 0.6, 0.6, 0.6, 0.02);
         level.playSound(null, center, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 0.35F, 1.6F);
 
-        player.getCooldowns().addCooldown(tool, COOLDOWN_TICKS);
+        if (WrgConfig.blastMiningCooldown > 0) player.getCooldowns().addCooldown(tool, WrgConfig.blastMiningCooldown);
         tool.hurtAndBreak(broken, player, context.getHand());   // 1 durability per block
         return InteractionResult.SUCCESS;
     }

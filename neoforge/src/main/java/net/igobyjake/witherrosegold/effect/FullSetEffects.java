@@ -1,5 +1,6 @@
 package net.igobyjake.witherrosegold.effect;
 
+import net.igobyjake.witherrosegold.config.WrgConfig;
 import net.igobyjake.witherrosegold.util.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,10 +29,7 @@ import net.minecraft.world.entity.LivingEntity;
  * Vanilla-only (same file on Fabric and NeoForge); the loaders just call these methods.
  */
 public final class FullSetEffects {
-    /** Fraction of explosion damage removed (vanilla Blast Protection IV on every piece caps at 80%). */
-    public static final float BLAST_REDUCTION = 0.5F;
-    public static final float ZAP_CHANCE = 0.5F;
-    public static final float ZAP_DAMAGE = 3.0F;
+    // Amounts (zap chance/damage, blast protection) are settings: see config/WrgConfig.
     /** How often (in ticks) players are checked for the set-bonus effect. */
     public static final int SET_BONUS_CHECK_TICKS = 10;
     public static final Identifier WITHER_ROSED = Identifier.fromNamespaceAndPath("witherrosegold", "wither_rosed");
@@ -50,7 +48,7 @@ public final class FullSetEffects {
     /** Called before damage is applied; returns the (possibly reduced) amount. */
     public static float modifyIncomingDamage(LivingEntity victim, DamageSource source, float amount) {
         if (amount > 0 && source.is(DamageTypeTags.IS_EXPLOSION) && hasFullSet(victim)) {
-            return amount * (1.0F - BLAST_REDUCTION);
+            return amount * (float) (1.0 - WrgConfig.blastProtection);
         }
         return amount;
     }
@@ -62,11 +60,11 @@ public final class FullSetEffects {
         Entity attacker = source.getEntity();
         if (!(attacker instanceof LivingEntity target) || attacker != source.getDirectEntity() || attacker == victim) return;
         if (source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)) return;
-        if (!hasFullSet(victim) || victim.getRandom().nextFloat() >= ZAP_CHANCE) return;
+        if (!hasFullSet(victim) || victim.getRandom().nextFloat() >= WrgConfig.zapChance) return;
 
         DamageSource zap = new DamageSource(
                 level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(ModTags.DamageTypes.ZAP), victim);
-        target.hurtServer(level, zap, ZAP_DAMAGE);
+        target.hurtServer(level, zap, (float) WrgConfig.zapDamage);
         clearHitCooldown(target);   // the zap doesn't make the attacker immune to the next real hit
 
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, target.getX(), target.getY(0.5), target.getZ(),
@@ -84,7 +82,7 @@ public final class FullSetEffects {
     public static void updateSetBonus(LivingEntity entity) {
         Holder<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.get(WITHER_ROSED).orElse(null);
         if (effect == null) return;
-        boolean wearing = hasFullSet(entity);
+        boolean wearing = WrgConfig.setBonusEffect && hasFullSet(entity);
         MobEffectInstance current = entity.getEffect(effect);
         if (wearing && current == null) {
             // Infinite, no particles, icon shown in the inventory and HUD.
