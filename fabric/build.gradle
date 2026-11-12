@@ -11,6 +11,18 @@ base {
 }
 
 repositories {
+	// Mod Menu and Cloth Config, from Modrinth's maven.
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 fabricApi {
@@ -29,6 +41,10 @@ fabricApi {
 def rgeJars = fileTree(dir: file(project.rge_dir), include: 'rosegoldequipment-*.jar', exclude: ['*-sources.jar', '*-javadoc.jar'])
 
 dependencies {
+	// Optional settings screen: compiled against, but not required at runtime.
+	modCompileOnly("maven.modrinth:modmenu:${project.modmenu_version}") { transitive = false }
+	modCompileOnly("maven.modrinth:cloth-config:${project.cloth_config_version}") { transitive = false }
+
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()

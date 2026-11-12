@@ -1,5 +1,6 @@
 package net.igobyjake.witherrosegold;
 
+import net.igobyjake.witherrosegold.config.ConfigFile;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -27,6 +28,7 @@ public class witherrosegold implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ConfigFile.load();   // settings (config/witherrosegold.json)
         ModItems.registerModItems();
         ModEntities.registerModEntities();
         ModEffects.registerModEffects();
