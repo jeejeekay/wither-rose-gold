@@ -110,7 +110,7 @@ w(f"data/{NS}/damage_type/zap.json", {"exhaustion": 0.1, "message_id": f"{NS}.za
 w(f"data/{NS}/tags/damage_type/wither_rose_proof.json", {"values": ["#minecraft:is_fire", "#minecraft:is_explosion"]})
 w("data/minecraft/tags/damage_type/avoids_guardian_thorns.json", {"values": [I("zap")]})
 w("data/minecraft/tags/damage_type/bypasses_armor.json", {"values": [I("zap")]})   # always exactly 3
-w(f"data/{NS}/tags/item/wither_rose_gold_repairable.json", {"values": [I("wither_rose_gold_ingot"), I("piezoshard")]})
+w(f"data/{NS}/tags/item/wither_rose_gold_repairable.json", {"values": [I("piezoshard")]})
 w(f"data/{NS}/tags/item/wither_rose_gold_armor.json", {"values": [I(f"wither_rose_golden_{a}") for a in ARMOR]})
 for t, tag in {**TOOLS, **ARMOR}.items():
     w(f"data/minecraft/tags/item/{tag}.json", {"values": [I(f"wither_rose_golden_{t}")]})
