@@ -12,7 +12,7 @@ RGE for now (the template uses vanilla's netherite upgrade template picture, the
 | Item | How you get it | What it does |
 |---|---|---|
 | Wither Rose Smithing Template | Every wither drops one (on top of its nether star; added to the drops, vanilla's loot table isn't replaced). Copy it: template top-middle, crying obsidian below it, 7 amethyst shards around (makes 2) | Can't burn or be blown up, like a nether star |
-| Piezoshard | 4 amethyst shards + 4 quartz, any shape | Right-click to throw; explodes on impact (blast size 3, TNT is 4; at most 20 damage at the centre). Stacks to 16, 1 s cooldown. Also repairs wither rose gold gear |
+| Piezoshard | 4 amethyst shards + 4 quartz, any shape | Right-click to throw; explodes on impact (blast size 3, TNT is 4; at most 20 damage at the centre). Stacks to 16, 1 s cooldown. Repairs wither rose gold gear |
 | Wither Rose Gold Ingot | Nether star + 4 piezoshards + 4 rose gold ingots, any shape (makes 4) | Fireproof, like netherite |
 | Wither rose gold sword / pickaxe / shovel / axe / hoe | Smithing table: template + rose gold tool + ingot | Netherite mining level and damage, but mining speed 11 and 2520 durability; fireproof. **Right-click a block = 3x3 blast** |
 | Wither rose gold helmet / chestplate / leggings / boots | Smithing table: template + rose gold armor + ingot | Netherite armor and toughness, fireproof, **no** knockback resistance. **Full set = blast protection + zap** |
@@ -27,6 +27,27 @@ blocks, chests/furnaces/other block entities, liquids or bedrock, or blocks the 
 - Blast protection: explosions do half damage.
 - Zap: when something hits you in melee, 50% chance it gets shocked for exactly 3 damage (ignores armor, and doesn't give the attacker hit immunity, so your own hits still land).
 - Players wearing the full set get the **Wither Rosed** effect (shown in the inventory, no particles) as a reminder; the armor tooltip explains the bonus.
+
+## Settings
+
+In game: **Mods -> Wither Rose Gold -> Config**. NeoForge has this screen built in; on Fabric it needs
+[Mod Menu](https://modrinth.com/mod/modmenu) + [Cloth Config](https://modrinth.com/mod/cloth-config)
+(optional - without them, edit the file). Changes apply straight away, no restart.
+Files: NeoForge `config/witherrosegold-local.toml`, Fabric `config/witherrosegold.json`.
+
+| Setting | Default | |
+|---|---|---|
+| Zap chance | 0.5 | chance (0-1) a melee attacker gets zapped |
+| Zap damage | 3 | ignores armor |
+| Blast protection | 0.5 | fraction (0-1) of explosion damage the full set removes |
+| Show Wither Rosed effect | on | the bonus works either way |
+| 3x3 blast | on | right-click a block with a tool |
+| 3x3 blast cooldown | 10 ticks | 20 ticks = 1 second |
+| Piezoshard explosion damage | 20 | at the centre, before armor |
+| Piezoshard breaks blocks | on | |
+| Piezoshard throw cooldown | 20 ticks | |
+
+Repairing: wither rose gold tools and armor repair with **piezoshards** in an anvil (not the ingot).
 
 ## Layout
 
