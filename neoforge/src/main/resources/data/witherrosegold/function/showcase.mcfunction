@@ -4,6 +4,7 @@ give @s witherrosegold:wither_rose_gold_ingot
 give @s witherrosegold:wither_rose_smithing_template
 give @s witherrosegold:piezoshard 16
 give @s witherrosegold:wither_rose_golden_sword
+give @s witherrosegold:wither_rose_golden_spear
 give @s witherrosegold:wither_rose_golden_pickaxe
 give @s witherrosegold:wither_rose_golden_axe
 give @s witherrosegold:wither_rose_golden_shovel
