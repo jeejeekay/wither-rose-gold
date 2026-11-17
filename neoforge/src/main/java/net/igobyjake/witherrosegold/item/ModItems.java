@@ -37,6 +37,10 @@ public class ModItems {
     // ---- Tools ---- (netherite stats; right-click a block = 3x3 blast, sneak + right-click = the normal action)
     public static final DeferredItem<BlastToolItem> WITHER_ROSE_GOLDEN_SWORD = ITEMS.registerItem("wither_rose_golden_sword",
             properties -> new BlastToolItem(properties.sword(ModToolTiers.WITHER_ROSE_GOLD, 3.0F, -2.4F).fireResistant()));
+    // Spear: the netherite spear's numbers (jab 5 damage / 1.15 s, charge x1.2 after 0.4 s, 8.75 s hold).
+    // A plain Item, not a BlastToolItem: right-click is the spear's charge, so it has no 3x3 blast.
+    public static final DeferredItem<Item> WITHER_ROSE_GOLDEN_SPEAR = ITEMS.registerItem("wither_rose_golden_spear",
+            properties -> new Item(properties.spear(ModToolTiers.WITHER_ROSE_GOLD, 1.15F, 1.2F, 0.4F, 2.5F, 9.0F, 5.5F, 5.1F, 8.75F, 4.6F).fireResistant()));
     public static final DeferredItem<BlastToolItem> WITHER_ROSE_GOLDEN_PICKAXE = ITEMS.registerItem("wither_rose_golden_pickaxe",
             properties -> new BlastToolItem(properties.pickaxe(ModToolTiers.WITHER_ROSE_GOLD, 1.0F, -2.8F).fireResistant()));
     public static final DeferredItem<BlastToolItem.Shovel> WITHER_ROSE_GOLDEN_SHOVEL = ITEMS.registerItem("wither_rose_golden_shovel",
