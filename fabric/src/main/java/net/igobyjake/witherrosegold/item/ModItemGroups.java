@@ -19,6 +19,7 @@ public class ModItemGroups {
                         output.accept(ModItems.WITHER_ROSE_SMITHING_TEMPLATE);
                         output.accept(ModItems.PIEZOSHARD);
                         output.accept(ModItems.WITHER_ROSE_GOLDEN_SWORD);
+                        output.accept(ModItems.WITHER_ROSE_GOLDEN_SPEAR);
                         output.accept(ModItems.WITHER_ROSE_GOLDEN_PICKAXE);
                         output.accept(ModItems.WITHER_ROSE_GOLDEN_SHOVEL);
                         output.accept(ModItems.WITHER_ROSE_GOLDEN_AXE);

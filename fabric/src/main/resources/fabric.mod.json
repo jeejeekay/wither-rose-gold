@@ -31,7 +31,7 @@
     "minecraft": "~1.21.11",
     "java": ">=21",
     "fabric-api": "*",
-    "rosegoldequipment": ">=1.10.0"
+    "rosegoldequipment": ">=1.11.0"
   },
   "suggests": {
     "modmenu": "*",

@@ -15,7 +15,7 @@ should say *All N required tests passed*.
 | recipes | template copy, piezoshard, ingot, and all 9 smithing upgrades give the right item |
 | items | template can't burn/explode; ingot, tools, armor are fireproof (but not explosion proof); piezoshard has its description and stacks to 16 |
 | armor | full set = 20 armor, 12 toughness, 0 knockback resistance; trimmable; repairs with the ingot |
-| tools | 2031 durability, harvests ancient debris, repairs with the ingot |
+| tools | 2520 durability, harvests ancient debris, repairs with piezoshards; the spear is a real spear with netherite spear numbers |
 | blast_mining | pickaxe on a 3x3 stone wall: 8 blocks gone, obsidian corner stays, block behind untouched, 8 cobblestone, 8 durability, cooldown. Sneak + axe on a log strips it |
 | blast_protection | the same explosion hurts a zombie in WRG about half as much as one in netherite |
 | zap | hitting a zombie in the full set zaps the attacker |
