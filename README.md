@@ -15,6 +15,7 @@ RGE for now (the template uses vanilla's netherite upgrade template picture, the
 | Piezoshard | 4 amethyst shards + 4 quartz, any shape | Right-click to throw; explodes on impact (blast size 3, TNT is 4; at most 20 damage at the centre). Stacks to 16, 1 s cooldown. Repairs wither rose gold gear |
 | Wither Rose Gold Ingot | Nether star + 4 piezoshards + 4 rose gold ingots, any shape (makes 4) | Fireproof, like netherite |
 | Wither rose gold sword / pickaxe / shovel / axe / hoe | Smithing table: template + rose gold tool + ingot | Netherite mining level and damage, but mining speed 11 and 2520 durability; fireproof. **Right-click a block = 3x3 blast** |
+| Wither rose gold spear | Smithing table: template + rose gold spear + ingot | The netherite spear's jab and charge (5 jab damage, charge x1.2), 2520 durability, fireproof. No 3x3 blast: right-click is the charge |
 | Wither rose gold helmet / chestplate / leggings / boots | Smithing table: template + rose gold armor + ingot | Netherite armor and toughness, fireproof, **no** knockback resistance. **Full set = blast protection + zap** |
 
 **3x3 blast** (right-click a block with any wither rose gold tool): breaks the 3x3 square flat against the

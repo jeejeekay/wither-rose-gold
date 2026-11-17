@@ -57,7 +57,7 @@ public final class WitherRoseGoldChecks {
     private static final String MOD = "witherrosegold";
     private static final String RGE = "rosegoldequipment";
     private static final String[] ARMOR = {"helmet", "chestplate", "leggings", "boots"};
-    private static final String[] TOOLS = {"sword", "pickaxe", "shovel", "axe", "hoe"};
+    private static final String[] TOOLS = {"sword", "pickaxe", "shovel", "axe", "hoe", "spear"};
     private static final EquipmentSlot[] SLOTS = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     private WitherRoseGoldChecks() {}
@@ -183,6 +183,17 @@ public final class WitherRoseGoldChecks {
             h.assertTrue(stack.isValidRepairItem(new ItemStack(item("piezoshard"))), "wither_rose_golden_" + tool + " can't be repaired with piezoshards");
             h.assertTrue(stack.getMaxDamage() == 2520, "wither_rose_golden_" + tool + " durability should be 2520, is " + stack.getMaxDamage());
         }
+        // The spear: a real spear (Lunge etc.) with the netherite spear's jab (1 + 4 = 5 damage) and charge (x1.2).
+        ItemStack spear = new ItemStack(item("wither_rose_golden_spear"));
+        h.assertTrue(spear.is(ItemTags.SPEARS), "spear is not in #minecraft:spears");
+        double jab = 0;
+        for (ItemAttributeModifiers.Entry e : spear.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY).modifiers()) {
+            if (e.attribute().is(Attributes.ATTACK_DAMAGE)) jab += e.modifier().amount();
+        }
+        h.assertTrue(jab == 4.0, "spear jab should be 5 damage (1 + 4), modifier is " + jab);
+        var charge = spear.get(DataComponents.KINETIC_WEAPON);
+        h.assertTrue(charge != null && charge.damageMultiplier() == 1.2F && charge.delayTicks() == 8,
+                "spear charge should be x1.2 after 8 ticks, is " + charge);
         float speed = new ItemStack(item("wither_rose_golden_pickaxe")).getDestroySpeed(Blocks.STONE.defaultBlockState());
         h.assertTrue(speed == 11.0F, "pickaxe mining speed on stone should be 11, is " + speed);
         h.succeed();

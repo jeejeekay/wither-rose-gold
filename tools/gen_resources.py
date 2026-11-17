@@ -26,6 +26,9 @@ tex = os.path.join(rge_res, f"assets/{RGE}/textures")
 cp(f"{tex}/item/rose_gold_ingot.png", f"assets/{NS}/textures/item/wither_rose_gold_ingot.png")
 for piece in list(TOOLS) + list(ARMOR):
     cp(f"{tex}/item/rose_golden_{piece}.png", f"assets/{NS}/textures/item/wither_rose_golden_{piece}.png")
+# The spear has two pictures: the small inventory one and the long one held in the hand.
+for suffix in ("", "_in_hand"):
+    cp(f"{tex}/item/rose_golden_spear{suffix}.png", f"assets/{NS}/textures/item/wither_rose_golden_spear{suffix}.png")
 layers = sorted(os.listdir(f"{tex}/entity/equipment"))
 for layer in layers:
     cp(f"{tex}/entity/equipment/{layer}/rose_gold.png", f"assets/{NS}/textures/entity/equipment/{layer}/wither_rose_gold.png")
@@ -41,6 +44,17 @@ simple_item("wither_rose_smithing_template", "minecraft:item/netherite_upgrade_s
 simple_item("piezoshard", "minecraft:item/echo_shard")                                            # placeholder
 for t in TOOLS:
     simple_item(f"wither_rose_golden_{t}", f"{NS}:item/wither_rose_golden_{t}", "minecraft:item/handheld")
+# Spear: flat picture in the inventory / on the ground / in frames, the long in-hand model everywhere else (as vanilla).
+SPEAR = f"{NS}:item/wither_rose_golden_spear"
+w(f"assets/{NS}/items/wither_rose_golden_spear.json", {
+    "model": {
+        "type": "minecraft:select",
+        "cases": [{"model": {"type": "minecraft:model", "model": SPEAR}, "when": ["gui", "ground", "fixed", "on_shelf"]}],
+        "fallback": {"type": "minecraft:model", "model": SPEAR + "_in_hand"},
+        "property": "minecraft:display_context"},
+    "swap_animation_scale": 1.95})
+w(f"assets/{NS}/models/item/wither_rose_golden_spear.json", {"parent": "minecraft:item/generated", "textures": {"layer0": SPEAR}})
+w(f"assets/{NS}/models/item/wither_rose_golden_spear_in_hand.json", {"parent": "minecraft:item/spear_in_hand", "textures": {"layer0": SPEAR + "_in_hand"}})
 # Armor: copy RGE's trim-aware item models (one model per trim material) and rename.
 ren = lambda s: s.replace(f"{RGE}:item/rose_golden_", f"{NS}:item/wither_rose_golden_")
 for a in ARMOR:
@@ -75,7 +89,7 @@ lang = {
     "item.witherrosegold.armor.set_bonus": "Full set: Wither Rosed",
     "item.witherrosegold.armor.set_bonus.desc": "Blast resistant and painful to touch",
 }
-for t in list(TOOLS) + list(ARMOR):
+for t in list(TOOLS) + ["spear"] + list(ARMOR):
     lang[f"item.witherrosegold.wither_rose_golden_{t}"] = f"Wither Rose Golden {t.capitalize()}"
 w(f"assets/{NS}/lang/en_us.json", lang)
 
@@ -94,7 +108,7 @@ w(f"data/{NS}/recipe/wither_rose_gold_ingot.json", {
     "type": "minecraft:crafting_shapeless",
     "ingredients": ["minecraft:nether_star"] + [I("piezoshard")] * 4 + [f"{RGE}:rose_gold_ingot"] * 4,
     "result": {"count": 4, "id": I("wither_rose_gold_ingot")}})
-for t in list(TOOLS) + list(ARMOR):
+for t in list(TOOLS) + ["spear"] + list(ARMOR):
     w(f"data/{NS}/recipe/wither_rose_golden_{t}_smithing.json", {
         "type": "minecraft:smithing_transform",
         "addition": I("wither_rose_gold_ingot"),
@@ -112,13 +126,13 @@ w("data/minecraft/tags/damage_type/avoids_guardian_thorns.json", {"values": [I("
 w("data/minecraft/tags/damage_type/bypasses_armor.json", {"values": [I("zap")]})   # always exactly 3
 w(f"data/{NS}/tags/item/wither_rose_gold_repairable.json", {"values": [I("piezoshard")]})
 w(f"data/{NS}/tags/item/wither_rose_gold_armor.json", {"values": [I(f"wither_rose_golden_{a}") for a in ARMOR]})
-for t, tag in {**TOOLS, **ARMOR}.items():
+for t, tag in {**TOOLS, "spear": "spears", **ARMOR}.items():
     w(f"data/minecraft/tags/item/{tag}.json", {"values": [I(f"wither_rose_golden_{t}")]})
 
 # ---------------------------------------------------------------- /function witherrosegold:showcase
 lines = ["# Gives every Wither Rose Gold item and builds an armor stand wearing the full set.",
          "# Run in a creative test world: /function witherrosegold:showcase"]
-for n in ["wither_rose_gold_ingot", "wither_rose_smithing_template", "piezoshard"] + [f"wither_rose_golden_{t}" for t in list(TOOLS) + list(ARMOR)]:
+for n in ["wither_rose_gold_ingot", "wither_rose_smithing_template", "piezoshard"] + [f"wither_rose_golden_{t}" for t in list(TOOLS) + ["spear"] + list(ARMOR)]:
     lines.append(f"give @s {NS}:{n}" + (" 16" if n == "piezoshard" else ""))
 slots = {"helmet": "head", "chestplate": "chest", "leggings": "legs", "boots": "feet"}
 eq = ",".join(f'{s}:{{id:"{NS}:wither_rose_golden_{a}",count:1}}' for a, s in slots.items())
